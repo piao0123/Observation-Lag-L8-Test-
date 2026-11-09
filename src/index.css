@@ -1,0 +1,350 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-tactical-mono: ui-monospace, "SF Mono", Monaco, Menlo, Consolas, "Cascadia Code", "Roboto Mono", "PingFang SC", "Microsoft YaHei", "Source Han Sans CN", monospace;
+  }
+
+  html, body, #root {
+    font-family: var(--font-tactical-mono) !important;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #020403;
+  }
+
+  /* Ensure all inputs, buttons, headings inherit the unified tactical font */
+  input, button, select, textarea, h1, h2, h3, h4, h5, h6, p, span, div {
+    font-family: inherit;
+  }
+}
+
+#game-container { position: relative; width: 100vw; height: 100vh; background: #030705; overflow: hidden; }
+
+.hud-overlay {
+  position: absolute; top: 15px; left: 20px; right: 20px;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  pointer-events: none; font-weight: bold; font-size: 11px;
+  letter-spacing: 1.5px; text-shadow: 0 0 8px rgba(0,255,102,0.6);
+  z-index: 10;
+}
+.status-box {
+  background: rgba(4, 16, 10, 0.90); border: 1px solid #00FF66;
+  padding: 10px 16px; border-radius: 4px;
+  box-shadow: 0 0 15px rgba(0,255,102,0.2); min-width: 250px;
+}
+.status-box.right-status {
+  min-width: 150px;
+  padding: 8px 14px;
+  margin-top: 48px;
+  margin-right: 0px;
+}
+.status-box.weapon-list-hud {
+  min-width: unset;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+.status-box.top-bar-hud {
+  min-width: unset;
+  padding: 6px 10px;
+  border-radius: 4px;
+}
+.bar-outer {
+  width: 100%; height: 10px; background: rgba(0, 30, 15, 0.9);
+  border: 1px solid #00FF66; margin-top: 3px; position: relative;
+  box-shadow: inset 0 0 5px #000;
+}
+.bar-inner { height: 100%; width: 100%; background: #00FF66; transition: width 0.05s linear; }
+.bar-inner.blind { background: #FFCC00; }
+.bar-inner.shield { background: #00CCFF; }
+
+canvas {
+  display: block;
+  cursor: crosshair;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#alarm-banner {
+  display: none;
+  position: absolute;
+  top: 85px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #FF3344;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px #FF3344;
+  animation: blink 0.8s infinite alternate;
+  z-index: 10;
+  pointer-events: none;
+  background: rgba(20, 4, 6, 0.85);
+  padding: 6px 16px;
+  border: 1px solid #FF3344;
+  border-radius: 4px;
+  white-space: nowrap;
+  max-width: 95vw;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+@keyframes blink {
+  from { opacity: 1; }
+  to { opacity: 0.3; }
+}
+
+#game-over-screen {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(2, 6, 4, 0.94);
+  z-index: 100;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-shadow: 0 0 10px #00FF66;
+}
+
+#game-over-screen h1 { font-size: 42px; margin-bottom: 10px; color: #FF3344; letter-spacing: 4px; }
+#game-over-screen p { font-size: 16px; color: #00FF66; margin-bottom: 25px; }
+
+.restart-btn {
+  background: rgba(0, 255, 102, 0.15);
+  border: 1px solid #00FF66;
+  color: #00FF66;
+  padding: 12px 30px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  letter-spacing: 2px;
+  box-shadow: 0 0 15px rgba(0,255,102,0.3);
+  transition: all 0.2s;
+}
+.restart-btn:hover { background: #00FF66; color: #000; }
+
+.log-panel {
+  position: absolute;
+  bottom: 75px;
+  left: 25px;
+  pointer-events: none;
+  font-size: 11px;
+  color: #00FF66;
+  opacity: 0.85;
+  max-height: 90px;
+  text-shadow: 0 0 4px #00FF66;
+  z-index: 10;
+}
+
+/* LEVEL 0 THEME OVERRIDES */
+body[data-level="level0_test"] { color: #FF3344; }
+body[data-level="level0_test"] .hud-overlay {
+  color: #FF3344;
+  text-shadow: 0 0 8px rgba(255, 51, 68, 0.7);
+}
+body[data-level="level0_test"] .status-box {
+  background: rgba(22, 6, 8, 0.92);
+  border: 1px solid #FF3344;
+  box-shadow: 0 0 15px rgba(255, 51, 68, 0.28);
+  color: #FF3344;
+}
+body[data-level="level0_test"] .bar-outer {
+  background: rgba(35, 0, 8, 0.9);
+  border: 1px solid #FF3344;
+}
+body[data-level="level0_test"] #score-count {
+  color: #FF6677 !important;
+}
+body[data-level="level0_test"] .log-panel { color: #FF3344; text-shadow: 0 0 4px #FF3344; }
+body[data-level="level0_test"] #game-over-screen { text-shadow: 0 0 10px #FF3344; }
+body[data-level="level0_test"] #game-over-screen p { color: #FF3344; }
+body[data-level="level0_test"] .restart-btn {
+  background: rgba(255, 51, 68, 0.18);
+  border: 1px solid #FF3344;
+  color: #FF3344;
+  box-shadow: 0 0 15px rgba(255, 51, 68, 0.35);
+}
+body[data-level="level0_test"] .restart-btn:hover { background: #FF3344; color: #000; }
+
+/* LEVEL 7/8 THEME OVERRIDES (翡翠绿 #10b981，外墙描边色) */
+body[data-level="level7_lab"] .hud-overlay, body[data-level="level8_test"] .hud-overlay {
+  color: #10b981;
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
+}
+body[data-level="level7_lab"] .status-box, body[data-level="level8_test"] .status-box {
+  background: rgba(6, 32, 27, 0.92);
+  border: 1px solid #10b981;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.28);
+  color: #10b981;
+}
+body[data-level="level7_lab"] .bar-outer, body[data-level="level8_test"] .bar-outer {
+  background: rgba(2, 18, 14, 0.9);
+  border: 1px solid #10b981;
+}
+/* v3: 血条/护盾恢复原色（绿 #00FF66 / 蓝 #00CCFF），不再覆盖为翡翠绿 */
+body[data-level="level7_lab"] #score-count, body[data-level="level8_test"] #score-count {
+  color: #6ee7b7 !important;
+}
+body[data-level="level7_lab"] .log-panel, body[data-level="level8_test"] .log-panel { color: #10b981; text-shadow: 0 0 4px #10b981; }
+
+/* TACTICAL POPUP & MODAL SYSTEM (UNIFIED GENERAL UI STYLING) */
+.pre-hell-modal-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(2, 6, 4, 0.88);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif !important;
+}
+
+.pre-hell-modal-card {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif !important;
+  background: rgba(4, 16, 10, 0.96);
+  border: 1.5px solid #00FF66;
+  border-radius: 8px;
+  box-shadow: 0 0 25px rgba(0, 255, 102, 0.25);
+  padding: 26px 36px;
+  max-width: 440px;
+  width: 90%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.pre-hell-modal-card * {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif !important;
+}
+
+.tactical-modal-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.tactical-modal-card {
+  background: #030d07;
+  border: 1.5px solid #00FF66;
+  border-radius: 8px;
+  box-shadow: 0 0 25px rgba(0, 255, 102, 0.22);
+  padding: 22px 28px;
+  max-width: 500px;
+  width: 92%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.tactical-modal-card.wide {
+  max-width: 540px;
+}
+
+.tactical-stats-box {
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(0, 255, 102, 0.35);
+  border-radius: 4px;
+  padding: 10px 16px;
+  margin: 12px 0 14px 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.tactical-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 20px;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  border: 1px solid transparent;
+}
+
+.tactical-btn-green {
+  background: #00FF66;
+  color: #000;
+  border-color: #00FF66;
+  box-shadow: 0 0 12px rgba(0, 255, 102, 0.3);
+}
+.tactical-btn-green:hover {
+  background: rgba(0, 255, 102, 0.82);
+  color: #000;
+  transform: translateY(-1px);
+}
+
+.tactical-btn-green-outline {
+  background: rgba(0, 255, 102, 0.12);
+  border-color: #00FF66;
+  color: #00FF66;
+  box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
+}
+.tactical-btn-green-outline:hover {
+  background: #00FF66;
+  color: #000;
+  transform: translateY(-1px);
+}
+
+.tactical-btn-red {
+  background: rgba(255, 51, 68, 0.18);
+  border-color: #FF3344;
+  color: #FF3344;
+  box-shadow: 0 0 12px rgba(255, 51, 68, 0.25);
+}
+.tactical-btn-red:hover {
+  background: #FF3344;
+  color: #000;
+  transform: translateY(-1px);
+}
+
+.tactical-btn-cyan {
+  background: rgba(34, 211, 238, 0.18);
+  border-color: #22d3ee;
+  color: #22d3ee;
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.25);
+}
+.tactical-btn-cyan:hover {
+  background: #22d3ee;
+  color: #000;
+  transform: translateY(-1px);
+}
+
+.tactical-btn-dim {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #d1d5db;
+}
+.tactical-btn-dim:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
