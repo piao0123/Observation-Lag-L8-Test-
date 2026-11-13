@@ -8,7 +8,7 @@ import './js/levels/level4_yacht.js';
 import './js/levels/level5_hotel.js';
 import './js/levels/level6_train.js';
 import './js/levels/level7_lab.js';
-import './js/levels/level8_test.js';
+import './js/levels/level7_test.js';
 import './js/soundManager.js';
 import './js/levelManager.js';
 import './js/engine.js';

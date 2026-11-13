@@ -295,15 +295,15 @@ export const translations: Record<Language, TranslationDict> = {
         },
         {
           id: 'level7',
-          title: '第 7 关 · 顶石科研中心',
+          title: '第 7 关 · 指挥中心',
           badge: '第 7 关',
-          desc: '顶石科研中心：正中央梯形战术指挥大厅、环形反应堆数据核心、四联曲面工作台与北向全景俯瞰廊。'
+          desc: '指挥中心：梯形主控大厅、中央环形会议桌、扇形指挥终端与三联工作站，3 台监控摄像头与 4 扇重型防爆门。'
         },
         {
           id: 'level8',
-          title: '第 8 关 · 隔离测试关卡',
+          title: '第 8 关 · 测试关卡',
           badge: '第 8 关 · 测试',
-          desc: '100% 隔离测试关卡：用于评估深色木制 45° 讲台、马蹄形 U 型工作台与重型装甲外墙，绝对不波及 Level 0 ~ 7。'
+          desc: '第 8 关 · 测试关卡：指挥中心全图（三房间），用于验证新敌人、模型与系统改动，不影响正式关卡。'
         }
       ]
     },
@@ -408,29 +408,29 @@ export const translations: Record<Language, TranslationDict> = {
         },
         {
           id: 'level7',
-          code: 'SECTOR 07 // APEX NEXUS',
-          title: '第 7 关 · 顶石科研中心',
+          code: 'SECTOR 07 // COMMAND CENTER',
+          title: '第 7 关 · 指挥中心',
           intel: [
-            '深潜于地下百米的顶石科研中心是百眼防务最核心的战略神经中枢。',
-            '中央梯形主控大厅架设了全域神经链接核心，四联曲面终端与北向全景观察廊构筑严密防线。',
-            '特工“幽灵”已突入中枢大厅，必须坚守控制核心并瓦解精锐安保卫队。'
+            '梯形主控大厅是指挥中枢的核心，中央环形会议桌与扇形指挥终端构成作战中枢。',
+            '3 台监控摄像头覆盖四扇重型防爆门与会议桌，4 联圆形工作站与三联隔间组成严密防线。',
+            '近黑特种敌人携半弧护盾与翡翠盲区诱捕突入，西装特工成群结队，必须坚守指挥核心。'
           ],
-          objective: '坚守梯形主控大厅，肃清 5 波顶石精锐防卫部队',
+          objective: '坚守梯形指挥大厅，肃清 5 波精锐防卫部队',
           targetWave: 5,
-          notice: '善用环形控制台与双联工作站作为掩体，利用移步换景全向机动拉扯敌人，掌控交火节奏。'
+          notice: '善用环形会议桌与扇形控制台作掩体，留意摄像头报警与特种敌人的翡翠盲区诱捕。'
         },
         {
           id: 'level8',
-          code: 'SECTOR 08 // ISOLATION LAB',
-          title: '第 8 关 · 隔离测试关卡',
+          code: 'SECTOR 08 // TEST LAB',
+          title: '第 8 关 · 测试关卡',
           intel: [
-            '这是 100% 隔离的关卡 8 展示实验室，用于单独研发与测试写实级无尘室及生活区道具。',
-            '包含储物柜、洗手池、掌纹虹膜识别终端、监控屏幕与防毒面具 5 大全新写实重制道具。',
-            '所有新元素严格约束在关卡 8 内部，绝对不波及 Level 0 ~ Level 7。'
+            '第 8 关为指挥中心全图测试关卡：保留三房间完整地图，用于验证新敌人模型、西装特工与防毒面具等新系统。',
+            '正式 L7 只留中间房间；本关卡的改动先在这里验证，通过后再合入正式关卡。',
+            '所有实验内容严格约束在本关卡内，不波及正式关卡。'
           ],
-          objective: '进驻隔离测试场，检验 5 大全新独立高精写实道具',
+          objective: '在第 8 关测试场中验证新系统，肃清测试敌军',
           targetWave: 1,
-          notice: '角色已直接生成在 5 大独立写实道具正前方，靠近即可直接全视角检验。'
+          notice: '测试关卡：敌人无视玩家（检查模式），按 G 可切换防毒面具状态。'
         }
       ]
     },
@@ -626,15 +626,15 @@ export const translations: Record<Language, TranslationDict> = {
         },
         {
           id: 'level7',
-          title: 'Level 07 · Apex Research Complex',
+          title: 'Level 07 · Command Center',
           badge: 'LEVEL 07',
-          desc: 'Apex Research Complex: Central trapezoidal command chamber with circular reactor nexus, 4 curved quadrant consoles, and panoramic observation bay.'
+          desc: 'Command Center: Trapezoidal command hall with central circular conference table, sector command consoles, triple workstations, 3 surveillance cameras and 4 heavy blast doors.'
         },
         {
           id: 'level8',
-          title: 'Level 08 · Isolated Test Sandbox',
+          title: 'Level 08 · Test Sandbox',
           badge: 'LEVEL 08',
-          desc: '100% Standalone Test Environment: Used for evaluating the mahogany 45° speaker podium, horseshoe U-shaped workstation, and heavy armored outer walls.'
+          desc: 'Level 08 · Test sandbox: full three-room Command Center map for validating new enemies, models and systems without touching the live levels.'
         }
       ]
     },
@@ -739,29 +739,29 @@ export const translations: Record<Language, TranslationDict> = {
         },
         {
           id: 'level7',
-          code: 'SECTOR 07 // APEX NEXUS',
-          title: 'Level 07 · Apex Research Complex',
+          code: 'SECTOR 07 // COMMAND CENTER',
+          title: 'Level 07 · Command Center',
           intel: [
-            'Buried deep beneath the bedrock lies the Apex Research Complex, the ultimate neural nerve center of the Panopticon network.',
-            'The central trapezoidal command chamber houses the primary data core surrounded by four curved workstations and a panoramic north observation bay.',
-            'Agent Specter has breached the central command chamber. Hold the nexus core and neutralize elite bio-security forces.'
+            'The trapezoidal command hall is the nerve center of the operation, anchored by a central circular conference table and sector command consoles.',
+            'Three surveillance cameras cover four heavy blast doors and the conference table, while circular pod stations and triple cubicles form a tight defensive line.',
+            'Near-black special operatives with arc shields and emerald blind-zone traps breach the hall alongside suited agents. Hold the command core.'
           ],
-          objective: 'Defend the central command chamber and eliminate 5 waves of apex elite defenders',
+          objective: 'Defend the trapezoidal command hall and eliminate 5 waves of elite defenders',
           targetWave: 5,
-          notice: 'Utilize the curved consoles and dual terminal desks as tactical cover. Leverage omnidirectional camera movement to outposition hostiles.'
+          notice: 'Use the circular conference table and sector consoles as cover. Watch for camera alarms and the special operatives\' emerald blind-zone traps.'
         },
         {
           id: 'level8',
-          code: 'SECTOR 08 // ISOLATION LAB',
-          title: 'Level 08 · Isolation Testing Facility',
+          code: 'SECTOR 08 // TEST LAB',
+          title: 'Level 08 · Test Sandbox',
           intel: [
-            '100% isolated Level 8 testing facility dedicated to evaluating photorealistic cleanroom and laboratory props.',
-            'Features 5 masterwork standalone props: Hazmat Locker, Scrub Sink, Biometric Terminal, Monitoring Screen, and CBRN Gas Mask.',
-            'All novel elements are strictly scoped within Level 8, preserving absolute isolation from Levels 0 through 7.'
+            'Level 08 is the full-map test sandbox of the Command Center: all three rooms, used to validate new enemy models, suited agents and the gas mask.',
+            'The live Level 7 keeps the middle room only; changes are proven here first, then merged into the live level.',
+            'All experimental content is strictly scoped to this level and never touches the live levels.'
           ],
-          objective: 'Inspect all 5 masterwork standalone props inside the isolation testing hall',
+          objective: 'Validate new systems in the Level 08 test sandbox',
           targetWave: 1,
-          notice: 'Operator spawns directly facing the 5 showcase props for immediate inspection.'
+          notice: 'Test level: enemies ignore the player (inspect mode); press G to toggle the gas mask.'
         }
       ]
     },

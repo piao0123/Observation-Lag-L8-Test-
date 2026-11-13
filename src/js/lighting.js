@@ -90,6 +90,51 @@
       o = props[i];
       if (!o) continue;
       if (o.type === 'desk' || o.type === 'conveyor') rect(o.x, o.y, o.w, o.h);
+      // 2026-11-09 重组 V4：闭合重型防爆门挡光（与引擎视线一致）；L7 家具挡光。
+      // 之前只认 desk/conveyor，L7 的门和家具（圆形控制台/三联隔间/服务器/扇形台/讲台）都不挡光，
+      // 摄像头辉光穿门穿家具、残留满射程，与引擎视锥（已挡）不一致。
+      if (o.type === 'heavy_auto_door' || (o.label && (o.label.indexOf('HEAVY AUTO DOOR') >= 0 || o.label.indexOf('HEAVY DOOR') >= 0))) {
+        if (o.openProgress === undefined || o.openProgress <= 0.4) {
+          // 2026-11-10 重组 V6：门用真实多边形（斜的）而不用 w/h 矩形（正的），与引擎视线一致
+          if (o.points && o.points.length >= 3) {
+            for (var k = 0; k < o.points.length; k++) {
+              var pa = o.points[k], pb = o.points[(k + 1) % o.points.length];
+              segs.push([pa.x, pa.y, pb.x, pb.y]);
+            }
+          } else if (typeof o.x === 'number' && typeof o.w === 'number' && typeof o.h === 'number') {
+            rect(o.x, o.y, o.w, o.h);
+          }
+        }
+        continue;
+      }
+      if (o.noCollision) continue;
+      if (o.type === 'circular_pod_workstation' || o.type === 'triple_cubicle_workstation' ||
+          o.type === 'command_podium' || o.type === 'sector_workstation' || o.type === 'server_cluster') {
+        // 2026-11-10 重组 V6：圆形控制台用 48 边形逼近（与引擎视线一致），不用 16 边形碰撞点
+        if (o.type === 'circular_pod_workstation' && typeof o.cx === 'number' && typeof o.cy === 'number' && o.points && o.points.length >= 3) {
+          if (!o._visionCircleCache) {
+            var _pr = Math.hypot(o.points[0].x - o.cx, o.points[0].y - o.cy);
+            var _pts48 = [];
+            for (var _m = 0; _m < 48; _m++) {
+              var _a = (_m * Math.PI * 2) / 48;
+              _pts48.push({ x: o.cx + Math.cos(_a) * _pr, y: o.cy + Math.sin(_a) * _pr });
+            }
+            o._visionCircleCache = _pts48;
+          }
+          var _cpts = o._visionCircleCache;
+          for (var k = 0; k < _cpts.length; k++) {
+            var pa = _cpts[k], pb = _cpts[(k + 1) % _cpts.length];
+            segs.push([pa.x, pa.y, pb.x, pb.y]);
+          }
+        } else if (o.points && o.points.length >= 2) {
+          for (var k = 0; k < o.points.length; k++) {
+            var pa = o.points[k], pb = o.points[(k + 1) % o.points.length];
+            segs.push([pa.x, pa.y, pb.x, pb.y]);
+          }
+        } else if (typeof o.x === 'number' && typeof o.w === 'number' && typeof o.h === 'number') {
+          rect(o.x, o.y, o.w, o.h);
+        }
+      }
     }
     return segs;
   }
@@ -364,8 +409,12 @@
           coneGlow(ctx, cam.x + Math.cos(a) * wOff, cam.y + Math.sin(a) * wOff, a, wHalf, wRange, [], wRgb, 0.42);
         } else if (!cam.type || cam.type === 'default') {
           // 2026-11-07：辉光顶点跟视锥走，移到镜头处（前方 16.5px）
-          coneGlow(ctx, cam.x + Math.cos(a) * 16.5, cam.y + Math.sin(a) * 16.5, a, 0.45, 330, segs,
-                   cam.detecting ? '255,51,51' : '0,255,102', 0.42);
+          // 2026-11-09 重组 V4：辉光射程跟摄像头 fovRange 走（之前写死 330，与引擎视锥 360/320 不一致）；
+          // L7 摄像头（theme 'l7'）辉光改翡翠色（之前亮绿，与引擎翡翠视锥不一致）；顶点按 scale 缩。
+          var _camR = (typeof cam.fovRange === 'number' && cam.fovRange > 0) ? cam.fovRange : 330;
+          var _camOff = 16.5 * ((typeof cam.scale === 'number' && cam.scale > 0) ? cam.scale : 1);
+          var _camRgb = cam.detecting ? '255,51,51' : (cam.theme === 'l7' ? '16,185,129' : '0,255,102');
+          coneGlow(ctx, cam.x + Math.cos(a) * _camOff, cam.y + Math.sin(a) * _camOff, a, 0.45, _camR, segs, _camRgb, 0.42);
         }
       }
 
@@ -373,8 +422,10 @@
       var pl = G.player;
       // 2026-11-02：盲区内无光影——玩家在盲区内不画辉光
       if (pl && typeof pl.x === 'number' && pl.hp > 0 && !pl.__inBlindZone) {
-        var pfov = (typeof pl.fov === 'number' && pl.fov > 0) ? pl.fov : Math.PI / 2.2;
-        var pdist = (typeof pl.viewDistance === 'number' && pl.viewDistance > 0) ? pl.viewDistance : 500;
+        // V8：玩家在敌方盲区（干扰者/特殊敌人）内时视野缩小，辉光跟有效视野一起缩（之前用 pl.fov/pl.viewDistance 全尺寸，与缩小的战术视锥割裂；所有含 jammer 的关卡都受影响）
+        var eff = (G.playerEffFov && typeof G.playerEffFov.fov === 'number' && typeof G.playerEffFov.viewDistance === 'number') ? G.playerEffFov : null;
+        var pfov = eff ? eff.fov : ((typeof pl.fov === 'number' && pl.fov > 0) ? pl.fov : Math.PI / 2.2);
+        var pdist = eff ? eff.viewDistance : ((typeof pl.viewDistance === 'number' && pl.viewDistance > 0) ? pl.viewDistance : 500);
         var pa = pl.angle || 0;
         // 2026-11-07：L0 玩家视锥是红的，辉光改红跟锥走（之前是绿，叠出来暗黄）；其他关保持绿
         // 2026-11-07：辉光顶点跟视锥走，移到眼睛处（前方 10px）

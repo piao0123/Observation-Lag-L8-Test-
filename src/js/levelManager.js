@@ -17,7 +17,7 @@ class LevelManager {
                 (typeof LEVEL_HOTEL !== 'undefined' ? LEVEL_HOTEL : window.LEVEL_HOTEL),
                 (typeof LEVEL_TRAIN !== 'undefined' ? LEVEL_TRAIN : window.LEVEL_TRAIN),
                 (typeof LEVEL_LAB !== 'undefined' ? LEVEL_LAB : window.LEVEL_LAB),
-                (typeof LEVEL_8_TEST !== 'undefined' ? LEVEL_8_TEST : window.LEVEL_8_TEST)
+                (typeof LEVEL_7_TEST !== 'undefined' ? LEVEL_7_TEST : window.LEVEL_7_TEST)
             ].filter(Boolean);
         }
         return this.levels;
@@ -54,7 +54,7 @@ class LevelManager {
         else if (level.id === 'level6_train') { w = window.level6MapWidth || 7200; h = window.level6MapHeight || 240; }
         else if (level.id === 'level4_yacht') { w = window.level4MapWidth || 2400; h = 720; }
         else if (level.id === 'level7_lab') { w = window.level7MapWidth || 3200; h = window.level7MapHeight || 2400; }
-        else if (level.id === 'level8_test') { w = window.level8MapWidth || 3200; h = window.level8MapHeight || 2400; }
+        else if (level.id === 'level7_test') { w = window.level7TestMapWidth || 3200; h = window.level7TestMapHeight || 2400; }
 
         const layout = level.getMapLayout(w, h);
 

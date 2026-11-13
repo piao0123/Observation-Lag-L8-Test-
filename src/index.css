@@ -177,25 +177,25 @@ body[data-level="level0_test"] .restart-btn {
 body[data-level="level0_test"] .restart-btn:hover { background: #FF3344; color: #000; }
 
 /* LEVEL 7/8 THEME OVERRIDES (翡翠绿 #10b981，外墙描边色) */
-body[data-level="level7_lab"] .hud-overlay, body[data-level="level8_test"] .hud-overlay {
+body[data-level="level7_lab"] .hud-overlay, body[data-level="level7_test"] .hud-overlay {
   color: #10b981;
   text-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
 }
-body[data-level="level7_lab"] .status-box, body[data-level="level8_test"] .status-box {
+body[data-level="level7_lab"] .status-box, body[data-level="level7_test"] .status-box {
   background: rgba(6, 32, 27, 0.92);
   border: 1px solid #10b981;
   box-shadow: 0 0 15px rgba(16, 185, 129, 0.28);
   color: #10b981;
 }
-body[data-level="level7_lab"] .bar-outer, body[data-level="level8_test"] .bar-outer {
+body[data-level="level7_lab"] .bar-outer, body[data-level="level7_test"] .bar-outer {
   background: rgba(2, 18, 14, 0.9);
   border: 1px solid #10b981;
 }
 /* v3: 血条/护盾恢复原色（绿 #00FF66 / 蓝 #00CCFF），不再覆盖为翡翠绿 */
-body[data-level="level7_lab"] #score-count, body[data-level="level8_test"] #score-count {
+body[data-level="level7_lab"] #score-count, body[data-level="level7_test"] #score-count {
   color: #6ee7b7 !important;
 }
-body[data-level="level7_lab"] .log-panel, body[data-level="level8_test"] .log-panel { color: #10b981; text-shadow: 0 0 4px #10b981; }
+body[data-level="level7_lab"] .log-panel, body[data-level="level7_test"] .log-panel { color: #10b981; text-shadow: 0 0 4px #10b981; }
 
 /* TACTICAL POPUP & MODAL SYSTEM (UNIFIED GENERAL UI STYLING) */
 .pre-hell-modal-overlay {

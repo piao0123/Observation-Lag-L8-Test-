@@ -1,5 +1,6 @@
 // =========================================================================
-// LEVEL 7: 顶石深潜科研中心 (APEX NEXUS RESEARCH COMPLEX)
+// LEVEL 7: 指挥中心 (COMMAND CENTER)
+// 2026-11-09 重组 V1：独立成关，只留中间房间（西/东两间后续更新）；原全图见 level7_test.js 测试关卡。
 // 依据用户最新草图与指令构建的巨型眼睛地图 (The Eye Map)
 // =========================================================================
 
@@ -272,8 +273,8 @@ function getServerCluster(cx, cy, angle = 0, scale = 1.0, label = "TACTICAL 5-RA
 
 const LEVEL_LAB = {
     id: "level7_lab",
-    name: "第 7 关 · 顶石科研中心",
-    nameEn: "Level 07 · Apex Research Complex",
+    name: "第 7 关 · 指挥中心",
+    nameEn: "Level 07 · Command Center",
     themeColor: "#022c22",
     gridColor: "rgba(16, 185, 129, 0.22)",
     accentColor: "#10b981",
@@ -405,80 +406,15 @@ const LEVEL_LAB = {
                 hideLabel: true
             },
 
-            // E. 巨型眼睛外围轮廓斜外墙
-            {
-                type: 'poly_wall',
-                points: [
-                    { x: 145.1, y: 1193.7 },
-                    { x: 1050.1, y: 483.7 },
-                    { x: 1059.9, y: 496.3 },
-                    { x: 154.9, y: 1206.3 }
-                ],
-                label: 'WEST EYE OUTER WALL TOP',
-                hideLabel: true
-            },
-            {
-                type: 'poly_wall',
-                points: [
-                    { x: 154.4, y: 1193.3 },
-                    { x: 1308.4, y: 1953.3 },
-                    { x: 1299.6, y: 1966.7 },
-                    { x: 145.6, y: 1206.7 }
-                ],
-                label: 'WEST EYE OUTER WALL BOTTOM',
-                hideLabel: true
-            },
-            {
-                type: 'solid',
-                points: [
-                    { x: 138, y: 1190 },
-                    { x: 155, y: 1190 },
-                    { x: 155, y: 1210 },
-                    { x: 138, y: 1210 }
-                ],
-                label: 'WEST EYE APEX CAP',
-                hideLabel: true
-            },
-            {
-                type: 'poly_wall',
-                points: [
-                    { x: 2149.9, y: 483.7 },
-                    { x: 3054.9, y: 1193.7 },
-                    { x: 3045.1, y: 1206.3 },
-                    { x: 2140.1, y: 496.3 }
-                ],
-                label: 'EAST EYE OUTER WALL TOP',
-                hideLabel: true
-            },
-            {
-                type: 'poly_wall',
-                points: [
-                    { x: 1891.6, y: 1953.3 },
-                    { x: 3045.6, y: 1193.3 },
-                    { x: 3054.4, y: 1206.7 },
-                    { x: 1900.4, y: 1966.7 }
-                ],
-                label: 'EAST EYE OUTER WALL BOTTOM',
-                hideLabel: true
-            },
-            {
-                type: 'solid',
-                points: [
-                    { x: 3045, y: 1190 },
-                    { x: 3062, y: 1190 },
-                    { x: 3062, y: 1210 },
-                    { x: 3045, y: 1210 }
-                ],
-                label: 'EAST EYE APEX CAP',
-                hideLabel: true
-            },
-
+            // D2. 门洞封墙已拆除（2026-11-09 重组 V2）：4 扇防爆门已加回（见 props，常闭），门洞由门本身封闭
             // F. 正中央大圆会议桌系统 (移植自 Level 8，2026-11-05，替换原中央圆台)
             {
                 type: 'solid',
                 circle: { cx: cx, cy: cy, radius: 155 },
                 label: 'CENTRAL CONFERENCE TABLE',
                 displayName: 'CONFERENCE TABLE',
+                // 2026-11-09 重组 V2：手雷可越过圆桌（只对手雷，子弹仍挡）
+                grenadePass: true,
                 hideLabel: true,
                 draw: (ctx) => {
                     // ===== 动静分离优化 (2026-11-05)：静态预渲染 + 动态叠加 =====
@@ -516,7 +452,7 @@ const LEVEL_LAB = {
         ];
 
         // =====================================================================
-        // 2. Blueprint 视觉图层 (巨型眼睛地坪 + 3 大屏幕 + 圆弧/门洞刻度)
+        // 2. Blueprint 视觉图层 (中间房间地坪 + 3 大屏幕；2026-11-09 重组 V1：只留中间房间)
         // =====================================================================
         const props = [
             {
@@ -538,17 +474,44 @@ const LEVEL_LAB = {
                         ((ctx) => {
                     ctx.save();
 
-                    // --- 1. 巨型眼睛三大房间地坪底色 ---
+                    // --- 1. 中间房间地坪底色（2026-11-09 重组 V1：只留中间房间，原三眼地坪改为中间梯形） ---
                     ctx.beginPath();
-                    ctx.moveTo(150, 1200);      // 西端眼睛顶点
-                    ctx.lineTo(1055, 470);     // 中室西北角
+                    ctx.moveTo(1055, 470);     // 中室西北角
                     ctx.lineTo(2145, 470);     // 中室东北角
-                    ctx.lineTo(3050, 1200);    // 东端眼睛顶点
                     ctx.lineTo(1896, 1960);    // 中室东南角
                     ctx.lineTo(1304, 1960);    // 中室西南角
                     ctx.closePath();
                     ctx.fillStyle = '#05100c';
                     ctx.fill();
+
+                    // V16：L7 同步移植简单方格（与 L8 同一套：单色底 + 50px 方格线，中间浅、边缘深的中性明暗渐变；图案与 L8 共享 window.__l78GridPattern）
+                    if (typeof window.__l78GridPattern === 'undefined' || !window.__l78GridPattern) {
+                        const tc = document.createElement('canvas');
+                        tc.width = 50; tc.height = 50;
+                        const tctx = tc.getContext('2d');
+                        // V18：地砖直接用深色之间的径向渐变（中心 #0a1f18 略浅、边缘 #020a07 更深）；
+                        // 不再用白色提亮——白色叠在深绿底上会显翡翠绿；中心是“浅色效果的深色”，仍是深色
+                        const g = tctx.createRadialGradient(25, 25, 5, 25, 25, 35);
+                        g.addColorStop(0, '#051410');
+                        g.addColorStop(1, '#020a07');
+                        tctx.fillStyle = g;
+                        tctx.fillRect(0, 0, 50, 50);
+                        // 方格边线：翡翠绿（用户确认没问题，不改；V17 改中性是过度解读，已改回）
+                        tctx.strokeStyle = 'rgba(16, 185, 129, 0.28)';
+                        tctx.lineWidth = 1;
+                        tctx.strokeRect(0.5, 0.5, 49, 49);
+                        window.__l78GridPattern = ctx.createPattern(tc, 'repeat');
+                    }
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(1055, 470);     // 中室西北角
+                    ctx.lineTo(2145, 470);     // 中室东北角
+                    ctx.lineTo(1896, 1960);    // 中室东南角
+                    ctx.lineTo(1304, 1960);    // 中室西南角
+                    ctx.closePath();
+                    ctx.fillStyle = window.__l78GridPattern;
+                    ctx.fill();
+                    ctx.restore();
 
                     // --- 2. 中间大圆形内部悬挂发光灯环 ---
                     ctx.beginPath();
@@ -989,7 +952,7 @@ const LEVEL_LAB = {
                     const personnelList = [
                         { name: 'SPECTRE (AGENT)', status: 'ACTIVE', bpm: 72, o2: '98%', hp: '100%' },
                         { name: 'NEXUS (OPERATOR)', status: 'ONLINE', bpm: 68, o2: '99%', hp: '100%' },
-                        { name: 'APEX (COMMANDER)', status: 'STANDBY', bpm: 75, o2: '97%', hp: '100%' },
+                        { name: 'OVERLORD (COMMANDER)', status: 'STANDBY', bpm: 75, o2: '97%', hp: '100%' },
                     ];
 
                     personnelList.forEach((p, i) => {
@@ -1086,25 +1049,7 @@ const LEVEL_LAB = {
 
                     ctx.restore(); // end 3 screens block
 
-                    // --- 4. 左右三角房间大圆弧结构 ---
-                    ctx.save();
-                    ctx.strokeStyle = '#10b981';
-
-                    // 4A. 西侧三角房间大圆弧
-                    ctx.beginPath();
-                    ctx.lineWidth = 3;
-                    ctx.moveTo(1142, 985);
-                    ctx.bezierCurveTo(1010, 1070, 1010, 1330, 1215, 1415);
-                    ctx.stroke();
-
-                    // 4B. 东侧三角房间大圆弧
-                    ctx.beginPath();
-                    ctx.lineWidth = 3;
-                    ctx.moveTo(2058, 985);
-                    ctx.bezierCurveTo(2190, 1070, 2190, 1330, 1985, 1415);
-                    ctx.stroke();
-
-                    ctx.restore();
+                    // --- 4. 左右三角房间大圆弧已删除（2026-11-09 重组 V1）：两侧房间不在本关 ---
 
                     ctx.restore();
                 
@@ -1117,11 +1062,12 @@ const LEVEL_LAB = {
             },
 
             // =========================================================
-            // 2. 4 扇重型自动防爆装甲门 (完全实装自动感应平移门系统，窄型紧凑装甲外壳，翡翠暗绿配色)
+            // 2. 4 扇重型自动防爆装甲门（2026-11-09 重组 V2：已加回，常闭 alwaysClosed，不感应开合）
             // =========================================================
             // 1. 西侧上门: 连接 (1110,860)-(1124,860) 与 (1132,980)-(1146,980)
             {
                 type: 'heavy_auto_door',
+                alwaysClosed: true,
                 cx: 1128,
                 cy: 920,
                 topX: 1117,
@@ -1146,6 +1092,7 @@ const LEVEL_LAB = {
             // 2. 西侧下门: 连接 (1271,1775)-(1285,1775) 与 (1292,1895)-(1306,1895)
             {
                 type: 'heavy_auto_door',
+                alwaysClosed: true,
                 cx: 1288.5,
                 cy: 1835,
                 topX: 1278,
@@ -1170,6 +1117,7 @@ const LEVEL_LAB = {
             // 3. 东侧上门: 连接 (2076,860)-(2090,860) 与 (2054,980)-(2068,980)
             {
                 type: 'heavy_auto_door',
+                alwaysClosed: true,
                 cx: 2072,
                 cy: 920,
                 topX: 2083,
@@ -1194,6 +1142,7 @@ const LEVEL_LAB = {
             // 4. 东侧下门: 连接 (1915,1775)-(1929,1775) 与 (1894,1895)-(1908,1895)
             {
                 type: 'heavy_auto_door',
+                alwaysClosed: true,
                 cx: 1911.5,
                 cy: 1835,
                 topX: 1922,
@@ -1254,28 +1203,12 @@ const LEVEL_LAB = {
         const zones = [
             {
                 id: 'apex_chamber_1',
-                name: '顶石中央指挥大厅 (Room 01)',
+                name: '中央指挥大厅 (Room 01)',
                 x: 1055,
                 y: 830,
                 w: 1090,
                 h: 1130
             },
-            {
-                id: 'apex_chamber_west',
-                name: '顶石西侧观测区 (West Sector)',
-                x: 150,
-                y: 490,
-                w: 905,
-                h: 1470
-            },
-            {
-                id: 'apex_chamber_east',
-                name: '顶石东侧科研区 (East Sector)',
-                x: 2145,
-                y: 490,
-                w: 905,
-                h: 1470
-            }
         ];
 
         // =====================================================================
@@ -1292,22 +1225,10 @@ const LEVEL_LAB = {
             { x: 1600, y: 800 },
             { x: 1350, y: 840 },
             { x: 1850, y: 840 },
-            { x: 1125, y: 920 },
-            { x: 2075, y: 920 },
-            { x: 1295, y: 1835 },
-            { x: 1905, y: 1835 },
-            { x: 950, y: 920 },
-            { x: 950, y: 1835 },
-            { x: 805, y: 1200 },
-            { x: 665, y: 1200 },
-            { x: 530, y: 1200 },
-            { x: 300, y: 1200 },
-            { x: 2250, y: 920 },
-            { x: 2250, y: 1835 },
-            { x: 2395, y: 1200 },
-            { x: 2535, y: 1200 },
-            { x: 2670, y: 1200 },
-            { x: 2900, y: 1200 }
+            { x: 1215, y: 920 },
+            { x: 2000, y: 920 },
+            { x: 1400, y: 1835 },
+            { x: 1800, y: 1835 }
         ];
 
         return {
@@ -1315,7 +1236,33 @@ const LEVEL_LAB = {
             props,
             zones,
             waypoints,
-            cameras: [],
+            cameras: [
+                // 2026-11-09 重组 V3：L7 新增 3 个摄像头（theme 'l7'：缩小 0.75、偏黑 + 翡翠描边）
+                // 1 号：讲台上方空档，覆盖左上门 + 会议桌左上；sweepTimer 0
+                {
+                    x: 1350, y: 820,
+                    baseAngle: 1.91, currentAngle: 1.91,
+                    sweepTimer: 0, sweepSpeed: 0.015, sweepRange: Math.PI / 4,
+                    fovRange: 360, detecting: false, cooldownTimer: 0,
+                    scale: 0.75, theme: 'l7'
+                },
+                // 2 号：右上扇形控制台上方空档，覆盖右上门 + 会议桌右上；sweepTimer π，与 1 号反相错开（躲避空档）
+                {
+                    x: 1850, y: 820,
+                    baseAngle: Math.PI - 1.91, currentAngle: Math.PI - 1.91,
+                    sweepTimer: Math.PI, sweepSpeed: 0.015, sweepRange: Math.PI / 4,
+                    fovRange: 360, detecting: false, cooldownTimer: 0,
+                    scale: 0.75, theme: 'l7'
+                },
+                // 3 号：最下方服务器上方，摆动幅度最大（±1.45 rad），覆盖左下右下两扇门；sweepTimer π/2 起始指向一侧门
+                {
+                    x: 1600, y: 1780,
+                    baseAngle: Math.PI / 2, currentAngle: Math.PI / 2,
+                    sweepTimer: Math.PI / 2, sweepSpeed: 0.01, sweepRange: 1.45,
+                    fovRange: 320, detecting: false, cooldownTimer: 0,
+                    scale: 0.75, theme: 'l7'
+                }
+            ],
             lasers: [],
             securityGates: []
         };

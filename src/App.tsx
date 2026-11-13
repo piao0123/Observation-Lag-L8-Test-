@@ -386,6 +386,8 @@ export default function App() {
         banner.innerText = isEn ? "🚨 STATION SECURITY ALARM - SUBWAY IN FULL LOCKDOWN 🚨" : "🚨 地铁安全警报 - 地铁站已进入全面封锁 🚨";
       } else if (levelId === 'level4_yacht') {
         banner.innerText = isEn ? "🚨 VESSEL SECURITY ALARM - YACHT IN FULL LOCKDOWN 🚨" : "🚨 游艇安全警报 - 游艇全舰进入全面封锁 🚨";
+      } else if (levelId === 'level7_lab' || levelId === 'level7_test') {
+        banner.innerText = isEn ? "🚨 APEX RESEARCH COMPLEX SECURITY ALARM - FACILITY IN FULL LOCKDOWN 🚨" : "🚨 顶石科研中心安全警报 - 科研中心已进入全面封锁 🚨";
       } else {
         banner.innerText = isEn ? "🚨 AIRPORT SECURITY ALARM - TERMINAL ON HIGH ALERT 🚨" : "🚨 机场安全警报 - 航站楼全区域戒备 🚨";
       }
@@ -635,7 +637,7 @@ export default function App() {
 
   const currentLevelId = (window as any).levelManager?.getCurrentLevel()?.id;
   const isLevel0 = (selectedLevelIndex === 0) || (currentLevelId === 'level0_test');
-  const isL78 = (selectedLevelIndex === 7 || selectedLevelIndex === 8) || (currentLevelId === 'level7_lab' || currentLevelId === 'level8_test');
+  const isL78 = (selectedLevelIndex === 7 || selectedLevelIndex === 8) || (currentLevelId === 'level7_lab' || currentLevelId === 'level7_test');
 
   return (
     <div className={`relative w-full h-screen overflow-hidden bg-[#020403] font-mono select-none ${isLevel0 ? 'text-[#FF3344]' : (isL78 ? 'text-[#10b981]' : 'text-[#00FF66]')}`}>

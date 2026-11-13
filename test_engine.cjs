@@ -38,7 +38,7 @@ require('./src/js/levels/level4_yacht.js');
 require('./src/js/levels/level5_hotel.js');
 require('./src/js/levels/level6_train.js');
 require('./src/js/levels/level7_lab.js');
-require('./src/js/levels/level8_test.js');
+require('./src/js/levels/level7_test.js');
 require('./src/js/soundManager.js');
 require('./src/js/levelManager.js');
 
@@ -46,7 +46,7 @@ console.log('Loading engine.js...');
 require('./src/js/engine.js');
 
 console.log('Testing level switching and 60 frame updates for all levels...');
-const levelIds = ['level1_airport', 'level2_subway', 'level3_bank', 'level0_test', 'level4_yacht', 'level5_hotel', 'level6_train', 'level7_lab', 'level8_test'];
+const levelIds = ['level1_airport', 'level2_subway', 'level3_bank', 'level0_test', 'level4_yacht', 'level5_hotel', 'level6_train', 'level7_lab', 'level7_test'];
 
 for (let id of levelIds) {
     console.log(`Testing level: ${id}`);
